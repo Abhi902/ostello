@@ -5,6 +5,7 @@ class CoachingInstitute {
   final List<String> subjects;
   final String location;
   final double discount;
+  final bool colleagues;
 
   CoachingInstitute({
     required this.name,
@@ -13,6 +14,7 @@ class CoachingInstitute {
     required this.subjects,
     required this.location,
     required this.discount,
+    required this.colleagues
   });
 }
 
@@ -25,6 +27,7 @@ class CoachingInstituteDataSet {
     subjects: ['Math', 'Science', 'English', 'History'],
     location: 'City A',
     discount: 10,
+      colleagues: false,
   ),
     CoachingInstitute(
       name: 'Institute B',
@@ -33,6 +36,7 @@ class CoachingInstituteDataSet {
       subjects: ['Math', 'Science', 'Computer Science', 'Physics'],
       location: 'City B',
       discount: 15,
+      colleagues: true,
     ),
     CoachingInstitute(
       name: 'Institute C',
@@ -41,6 +45,7 @@ class CoachingInstituteDataSet {
       subjects: ['Math', 'Science', 'History', 'Geography'],
       location: 'City A',
       discount: 12,
+      colleagues: false,
     ),
     CoachingInstitute(
       name: 'Institute D',
@@ -49,6 +54,7 @@ class CoachingInstituteDataSet {
       subjects: ['Math', 'Science', 'Chemistry', 'Biology'],
       location: 'City C',
       discount: 20,
+      colleagues: true,
     ),
     CoachingInstitute(
       name: 'Institute E',
@@ -57,6 +63,7 @@ class CoachingInstituteDataSet {
       subjects: ['Math', 'Science', 'English', 'Geography'],
       location: 'City B',
       discount: 18,
+      colleagues: false,
     ),
     CoachingInstitute(
       name: 'Institute F',
@@ -65,6 +72,7 @@ class CoachingInstituteDataSet {
       subjects: ['Math', 'Science', 'History', 'Chemistry'],
       location: 'City A',
       discount: 14,
+      colleagues: false,
     ),
     CoachingInstitute(
       name: 'Institute G',
@@ -73,6 +81,7 @@ class CoachingInstituteDataSet {
       subjects: ['Math', 'Science', 'Computer Science', 'English'],
       location: 'City C',
       discount: 10,
+      colleagues: true,
     ),
     CoachingInstitute(
       name: 'Institute H',
@@ -81,6 +90,7 @@ class CoachingInstituteDataSet {
       subjects: ['Math', 'Science', 'Physics', 'Biology'],
       location: 'City B',
       discount: 16,
+      colleagues: false,
     ),
     CoachingInstitute(
       name: 'Institute I',
@@ -89,15 +99,18 @@ class CoachingInstituteDataSet {
       subjects: ['Math', 'Science', 'History', 'English'],
       location: 'City A',
       discount: 22,
+      colleagues: false,
     ),
     CoachingInstitute(
       name: 'Institute J',
       rating: 4.1,
-      distance: '10 kms',
+      distance: '1 kms',
       subjects: ['Math', 'Science', 'Chemistry', 'Physics'],
       location: 'City C',
       discount: 12,
-    ),];
+      colleagues: true,
+    ),
+  ];
 
   List<CoachingInstitute> sortByDistanceAscending() {
     // Sort institutes by distance in ascending order

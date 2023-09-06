@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ostello/dataset/dataset.dart';
 
+enum SortingOption { byDistance, byRating, byPrice }
+
 class Search extends StatefulWidget {
   const Search({super.key});
 
@@ -17,6 +19,7 @@ class _SearchState extends State<Search> {
   bool isTriggered = false;
 
   List<CoachingInstitute> instituteDummy = [];
+  SortingOption selectedSortingOption = SortingOption.byDistance;
 
   CoachingInstituteDataSet dataSetObject = CoachingInstituteDataSet();
 
@@ -26,6 +29,49 @@ class _SearchState extends State<Search> {
     Icons.sort,
     Icons.keyboard_arrow_down,
   ];
+
+  void _showSortingOptionsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text('Sort Hostels By:'),
+          children: <Widget>[
+            SimpleDialogOption(
+              onPressed: () {
+                setState(() {
+                  selectedSortingOption = SortingOption.byDistance;
+                  instituteDummy = dataSetObject.sortByDistanceAscending();
+                });
+                Navigator.pop(context);
+              },
+              child: Text('Distance'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                setState(() {
+                  selectedSortingOption = SortingOption.byRating;
+                  instituteDummy = dataSetObject.sortByRatingAscending();
+                });
+                Navigator.pop(context);
+              },
+              child: Text('Rating'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                setState(() {
+                  selectedSortingOption = SortingOption.byPrice;
+                  instituteDummy = dataSetObject.sortByPriceAscending();
+                });
+                Navigator.pop(context);
+              },
+              child: Text('Price'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -136,10 +182,7 @@ class _SearchState extends State<Search> {
                             .toLowerCase()
                             .contains(value.toLowerCase()))
                         .toList();
-
-
                     log(instituteDummy.toString());
-
                   });
                 },
               ),
@@ -159,9 +202,12 @@ class _SearchState extends State<Search> {
                     padding: EdgeInsets.only(left: 8.w),
                     child: GestureDetector(
                       onTap: () {
-                        isTriggered = !isTriggered;
                         selectedIndex = index;
                         setState(() {});
+
+                        if (index == 1) {
+                          _showSortingOptionsDialog();
+                        }
                       },
                       child: Container(
                         width: 79.w,
@@ -211,7 +257,7 @@ class _SearchState extends State<Search> {
               ),
             ),
             SizedBox(
-              height: 600.h,
+              height: 625.h,
               width: 350.w,
               child: ListView.builder(
                 itemCount: instituteDummy.length,
@@ -220,7 +266,7 @@ class _SearchState extends State<Search> {
                 // Replace with the number of items you have
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: EdgeInsets.only(top: 20.h),
+                    padding: EdgeInsets.only(top: 20.h,bottom: instituteDummy[index].colleagues ? 20.h : 0),
                     child: SizedBox(
                       height: 200.h,
                       child: Stack(
@@ -229,7 +275,7 @@ class _SearchState extends State<Search> {
                             bottom: 0,
                             child: AnimatedContainer(
                               width: 338.w,
-                              height: isTriggered ? 100 : 0,
+                              height: instituteDummy[index].colleagues ? 100 : 0,
                               padding: EdgeInsets.only(bottom: 6.h, left: 30.w),
                               duration: const Duration(seconds: 1),
                               // Adjust the duration as needed
