@@ -265,7 +265,7 @@ class _SearchState extends State<Search> {
               height: 30.h,
             ),
             SizedBox(
-              height: 596.h,
+              height: 640.h,
               width: 360.w,
               child: ListView.builder(
                 itemCount: instituteDummy.length,
@@ -287,7 +287,7 @@ class _SearchState extends State<Search> {
                             child: AnimatedContainer(
                               width: 338.w,
                               height:
-                                  instituteDummy[index].colleagues ? 100 : 0,
+                                  instituteDummy[index].colleagues ? 100.h : 0,
                               padding: EdgeInsets.only(bottom: 6.h, left: 30.w),
                               duration: const Duration(seconds: 1),
                               // Adjust the duration as needed
