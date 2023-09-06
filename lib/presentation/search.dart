@@ -86,26 +86,26 @@ class _SearchState extends State<Search> {
     return Scaffold(
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 21.w),
+                  padding: EdgeInsets.only(left: 28.w),
                   child: Container(
                     alignment: Alignment.center,
+                    padding: EdgeInsets.all(10),
                     width: 36.w,
                     height: 36.h,
                     decoration: const ShapeDecoration(
                       color: Color(0xFF7D23E0),
                       shape: CircleBorder(),
                     ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: 15,
-                      ),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                      size: 15,
                     ),
                   ),
                 ),
@@ -207,6 +207,11 @@ class _SearchState extends State<Search> {
 
                         if (index == 1) {
                           _showSortingOptionsDialog();
+                        } else if (index == 2) {
+                          setState(() {
+                            instituteDummy =
+                                dataSetObject.getHostelsWithin2Km();
+                          });
                         }
                       },
                       child: Container(
@@ -257,16 +262,22 @@ class _SearchState extends State<Search> {
               ),
             ),
             SizedBox(
-              height: 625.h,
-              width: 350.w,
+              height: 30.h,
+            ),
+            SizedBox(
+              height: 596.h,
+              width: 360.w,
               child: ListView.builder(
                 itemCount: instituteDummy.length,
-                padding: EdgeInsets.only(top: 25.h),
+                // shrinkWrap: true,
+                padding: EdgeInsets.only(top: 0.h),
                 scrollDirection: Axis.vertical,
                 // Replace with the number of items you have
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: EdgeInsets.only(top: 20.h,bottom: instituteDummy[index].colleagues ? 20.h : 0),
+                    padding: EdgeInsets.only(
+                        top: 10.h,
+                        bottom: instituteDummy[index].colleagues ? 20.h : 0),
                     child: SizedBox(
                       height: 200.h,
                       child: Stack(
@@ -275,7 +286,8 @@ class _SearchState extends State<Search> {
                             bottom: 0,
                             child: AnimatedContainer(
                               width: 338.w,
-                              height: instituteDummy[index].colleagues ? 100 : 0,
+                              height:
+                                  instituteDummy[index].colleagues ? 100 : 0,
                               padding: EdgeInsets.only(bottom: 6.h, left: 30.w),
                               duration: const Duration(seconds: 1),
                               // Adjust the duration as needed
@@ -427,8 +439,8 @@ class _SearchState extends State<Search> {
                                         height: 10.h,
                                       ),
                                       Container(
-                                        width: 57,
-                                        height: 19,
+                                        width: 57.w,
+                                        height: 19.h,
                                         decoration: BoxDecoration(
                                           color: const Color(0xFF7D23E0),
                                           // Use the color you want
@@ -461,7 +473,7 @@ class _SearchState extends State<Search> {
                   );
                 },
               ),
-            ),
+            )
           ],
         ),
       ),

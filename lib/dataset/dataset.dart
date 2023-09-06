@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class CoachingInstitute {
   final String name;
   final double rating;
@@ -7,28 +9,27 @@ class CoachingInstitute {
   final double discount;
   final bool colleagues;
 
-  CoachingInstitute({
-    required this.name,
-    required this.rating,
-    required this.distance,
-    required this.subjects,
-    required this.location,
-    required this.discount,
-    required this.colleagues
-  });
+  CoachingInstitute(
+      {required this.name,
+      required this.rating,
+      required this.distance,
+      required this.subjects,
+      required this.location,
+      required this.discount,
+      required this.colleagues});
 }
 
 class CoachingInstituteDataSet {
-  final List<CoachingInstitute> institutes=[
+  final List<CoachingInstitute> institutes = [
     CoachingInstitute(
-    name: 'Institute A',
-    rating: 4.5,
-    distance: '5 kms',
-    subjects: ['Math', 'Science', 'English', 'History'],
-    location: 'City A',
-    discount: 10,
+      name: 'Institute A',
+      rating: 4.5,
+      distance: '5 kms',
+      subjects: ['Math', 'Science', 'English', 'History'],
+      location: 'City A',
+      discount: 10,
       colleagues: false,
-  ),
+    ),
     CoachingInstitute(
       name: 'Institute B',
       rating: 4.8,
@@ -112,21 +113,38 @@ class CoachingInstituteDataSet {
     ),
   ];
 
+  List<CoachingInstitute> getHostelsWithin2Km() {
+    log(institutes
+        .where((institute) {
+          final distanceStr = institute.distance.replaceAll(' kms', '');
+          final distance = double.tryParse(distanceStr);
+          return distance != null && distance <= 2;
+        })
+        .toList()
+        .toString());
+
+    return institutes.where((institute) {
+      final distanceStr = institute.distance.replaceAll(' kms', '');
+      final distance = double.tryParse(distanceStr);
+      return distance != null && distance <= 2;
+    }).toList();
+  }
+
   List<CoachingInstitute> sortByDistanceAscending() {
     // Sort institutes by distance in ascending order
     institutes.sort((a, b) => a.distance.compareTo(b.distance));
     return institutes;
   }
+
   List<CoachingInstitute> sortByRatingAscending() {
     // Sort institutes by rating in ascending order
     institutes.sort((a, b) => a.rating.compareTo(b.rating));
     return institutes;
   }
+
   List<CoachingInstitute> sortByPriceAscending() {
     // Sort institutes by price in ascending order
     institutes.sort((a, b) => a.discount.compareTo(b.discount));
     return institutes;
   }
-
 }
-
