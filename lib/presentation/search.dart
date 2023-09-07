@@ -19,7 +19,6 @@ class _SearchState extends State<Search> {
   bool isTriggered = false;
 
   List<CoachingInstitute> instituteDummy = [];
-  SortingOption selectedSortingOption = SortingOption.byDistance;
 
   CoachingInstituteDataSet dataSetObject = CoachingInstituteDataSet();
 
@@ -30,12 +29,93 @@ class _SearchState extends State<Search> {
     Icons.keyboard_arrow_down,
   ];
 
+  SortingOption selectedSortingOption =
+      SortingOption.byDistance; // Default selection
+
+  // void _showSortingOptionsDialog(BuildContext cxt) {
+  //   SortingOption newSelectedSortingOption =
+  //       selectedSortingOption; // Create a temporary variable
+
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text('Sort Institutes By:'),
+  //         content: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: <Widget>[
+  //             ListTile(
+  //               leading: Radio(
+  //                 value: SortingOption.byDistance,
+  //                 groupValue:
+  //                     newSelectedSortingOption, // Use the temporary variable
+  //                 onChanged: (SortingOption? value) {
+  //                   setState(() {
+  //                     newSelectedSortingOption = value!;
+  //                   });
+  //                 },
+  //               ),
+  //               title: const Text('Distance'),
+  //             ),
+  //             ListTile(
+  //               leading: Radio(
+  //                 value: SortingOption.byRating,
+  //                 groupValue:
+  //                     newSelectedSortingOption, // Use the temporary variable
+  //                 onChanged: (SortingOption? value) {
+  //                   setState(() {
+  //                     newSelectedSortingOption = value!;
+  //                   });
+  //                 },
+  //               ),
+  //               title: const Text('Rating'),
+  //             ),
+  //             ListTile(
+  //               leading: Radio(
+  //                 value: SortingOption.byPrice,
+  //                 groupValue:
+  //                     newSelectedSortingOption, // Use the temporary variable
+  //                 onChanged: (SortingOption? value) {
+  //                   setState(() {
+  //                     newSelectedSortingOption = value!;
+  //                   });
+  //                 },
+  //               ),
+  //               title: const Text('Price'),
+  //             ),
+  //           ],
+  //         ),
+  //         actions: <Widget>[
+  //           ElevatedButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: Text('Cancel'),
+  //           ),
+  //           ElevatedButton(
+  //             onPressed: () {
+  //               setState(() {
+  //                 selectedSortingOption =
+  //                     newSelectedSortingOption; // Update the selected option
+  //               });
+  //               Navigator.of(context).pop();
+  //               // Apply the selected sorting option
+  //               // (You can call a function here to apply sorting)
+  //             },
+  //             child: Text('Apply'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
   void _showSortingOptionsDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: const Text('Sort Hostels By:'),
+          title: const Text('Sort Institutes By:'),
           children: <Widget>[
             SimpleDialogOption(
               onPressed: () {
@@ -73,6 +153,9 @@ class _SearchState extends State<Search> {
     );
   }
 
+  // DROP DOWN
+  List<String> sortingOptions = ['Distance', 'Rating', 'Price'];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -88,6 +171,7 @@ class _SearchState extends State<Search> {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -199,67 +283,146 @@ class _SearchState extends State<Search> {
                   scrollDirection: Axis.horizontal,
                   // Replace with the number of items you have
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(left: 8.w),
-                      child: GestureDetector(
-                        onTap: () {
-                          selectedIndex = index;
-                          setState(() {});
+                    return index != 1
+                        ? Padding(
+                            padding: EdgeInsets.only(left: 8.w),
+                            child: GestureDetector(
+                              onTap: () {
+                                selectedIndex = index;
+                                setState(() {});
 
-                          if (index == 1) {
-                            _showSortingOptionsDialog();
-                          } else if (index == 2) {
-                            setState(() {
-                              instituteDummy =
-                                  dataSetObject.getHostelsWithin2Km();
-                            });
-                          }
-                        },
-                        child: Container(
-                          width: 79.w,
-                          height: 29.h,
-                          decoration: ShapeDecoration(
-                            color: selectedIndex == index
-                                ? const Color(0xff7D23E0)
-                                : Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  width: 0.50.w,
-                                  color: const Color(0xFF7D23E0)),
-                              borderRadius: BorderRadius.circular(18),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                filters[index],
-                                style: TextStyle(
+                                if (index == 1) {
+                                  _showSortingOptionsDialog();
+                                } else if (index == 2) {
+                                  setState(() {
+                                    instituteDummy =
+                                        dataSetObject.getHostelsWithin2Km();
+                                  });
+                                }
+                              },
+                              child: Container(
+                                width: 79.w,
+                                height: 29.h,
+                                decoration: ShapeDecoration(
                                   color: selectedIndex == index
-                                      ? Colors.white
-                                      : const Color(0xff7D23E0),
-                                  fontSize: 14.sp,
-                                  fontFamily: 'Avenir Next LT Pro',
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.21.h,
-                                  letterSpacing: 0.14,
+                                      ? const Color(0xff7D23E0)
+                                      : Colors.transparent,
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        width: 0.50.w,
+                                        color: const Color(0xFF7D23E0)),
+                                    borderRadius: BorderRadius.circular(18),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      filters[index],
+                                      style: TextStyle(
+                                        color: selectedIndex == index
+                                            ? Colors.white
+                                            : const Color(0xff7D23E0),
+                                        fontSize: 14.sp,
+                                        fontFamily: 'Avenir Next LT Pro',
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.21.h,
+                                        letterSpacing: 0.14,
+                                      ),
+                                    ),
+                                    SizedBox(width: 4.w),
+                                    index <= 1
+                                        ? Icon(
+                                            icons[index],
+                                            color: selectedIndex == index
+                                                ? Colors.white
+                                                : const Color(0xff7D23E0),
+                                            size: 16,
+                                          )
+                                        : Container(),
+                                  ],
                                 ),
                               ),
-                              SizedBox(width: 4.w),
-                              index <= 1
-                                  ? Icon(
-                                      icons[index],
-                                      color: selectedIndex == index
-                                          ? Colors.white
-                                          : const Color(0xff7D23E0),
-                                      size: 16,
-                                    )
-                                  : Container(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
+                            ),
+                          )
+                        : Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 8.w),
+                              child: Container(
+                                width: 79.w,
+                                height: 29.h,
+                                padding: EdgeInsets.all(3),
+                                decoration: ShapeDecoration(
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(
+                                        width: 0.50, color: Color(0xFF7D23E0)),
+                                    borderRadius: BorderRadius.circular(18),
+                                  ),
+                                ),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<SortingOption>(
+                                    value: selectedSortingOption,
+                                    borderRadius: BorderRadius.circular(30),
+                                    icon: const Icon(Icons.keyboard_arrow_down),
+                                    iconSize: 14,
+                                    elevation: 16,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                    ),
+                                    iconDisabledColor: Color(0xFF7D23E0),
+                                    iconEnabledColor: Color(0xFF7D23E0),
+                                    onChanged: (SortingOption? newValue) {
+                                      if (newValue != null) {
+                                        setState(() {
+                                          selectedSortingOption = newValue;
+                                          // Apply the selected sorting option
+                                          if (newValue ==
+                                              SortingOption.byDistance) {
+                                            instituteDummy = dataSetObject
+                                                .sortByDistanceAscending();
+                                          } else if (newValue ==
+                                              SortingOption.byRating) {
+                                            instituteDummy = dataSetObject
+                                                .sortByRatingAscending();
+                                          } else if (newValue ==
+                                              SortingOption.byPrice) {
+                                            instituteDummy = dataSetObject
+                                                .sortByPriceAscending();
+                                          }
+                                        });
+                                      }
+                                    },
+                                    items: sortingOptions.map((String value) {
+                                      SortingOption option =
+                                          SortingOption.byDistance;
+                                      if (value == 'Rating') {
+                                        option = SortingOption.byRating;
+                                      } else if (value == 'Price') {
+                                        option = SortingOption.byPrice;
+                                      }
+
+                                      return DropdownMenuItem<SortingOption>(
+                                        value: option,
+                                        child: Text(
+                                          value,
+                                          style: TextStyle(
+                                            color: selectedIndex == index
+                                                ? Colors.white
+                                                : const Color(0xff7D23E0),
+                                            fontSize: 14.sp,
+                                            fontFamily: 'Avenir Next LT Pro',
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.21.h,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
                   },
                 ),
               ),
@@ -268,11 +431,11 @@ class _SearchState extends State<Search> {
               ),
               SizedBox(
                 height: 640.h,
-                width: 360.w,
+                width: 336.w,
                 child: ListView.builder(
                   itemCount: instituteDummy.length,
                   // shrinkWrap: true,
-                  padding: EdgeInsets.only(top: 0.h),
+                  // padding: EdgeInsets.only(top: 0.h),
                   scrollDirection: Axis.vertical,
                   // Replace with the number of items you have
                   itemBuilder: (context, index) {
@@ -286,16 +449,16 @@ class _SearchState extends State<Search> {
                           children: [
                             Positioned(
                               bottom: 0,
-                              child: AnimatedContainer(
+                              child: Container(
                                 width: 338.w,
                                 height: instituteDummy[index].colleagues
                                     ? 100.h
                                     : 0,
                                 padding:
                                     EdgeInsets.only(bottom: 6.h, left: 30.w),
-                                duration: const Duration(seconds: 1),
+
                                 // Adjust the duration as needed
-                                curve: Curves.easeInOut,
+
                                 decoration: ShapeDecoration(
                                   color: const Color(0xFFF6EFFE),
                                   shape: RoundedRectangleBorder(
@@ -493,8 +656,6 @@ class _SearchState extends State<Search> {
     return Row(
       children: [
         Container(
-          width: 72.w,
-          height: 19.h,
           padding:
               EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w, bottom: 4.h),
           decoration: ShapeDecoration(
@@ -522,7 +683,7 @@ class _SearchState extends State<Search> {
           width: 62.w,
           height: 19.h,
           padding:
-              EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w, bottom: 4.h),
+              EdgeInsets.only(top: 5.h, left: 5.w, right: 5.w, bottom: 3.h),
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
               side: const BorderSide(width: 0.40, color: Color(0x777D23E0)),
